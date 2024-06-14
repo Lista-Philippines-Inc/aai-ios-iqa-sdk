@@ -1,38 +1,39 @@
-import { NativeEventEmitter } from 'react-native';
+declare module 'AAIIOSIQASDK' {
+    type ParamsConfig = {
+        // Define the expected shape of paramsConfig here
+        // For example:
+        // key1: string;
+        // key2: number;
+    };
 
-export interface ParamsConfig {
-  // Define the structure of ParamsConfig based on what your JS code expects.
-}
+    type UIConfig = {
+        // Define the expected shape of uiConfig here
+        // For example:
+        // theme: string;
+        // colorScheme: string;
+    };
 
-export interface UIConfig {
-  // Define the structure of UIConfig based on what your JS code expects.
-}
+    type License = string;
 
-export interface License {
-  // Define the structure of License based on what your JS code expects.
-}
+    type Info = {
+        success: string;
+        cardImg: string;
+        IDVID: string;
+        transactionId: string;
+        pictureType: string;
+    };
 
-export interface SDKEventInfo {
-  name: string;
-  body: any;
-}
+    type Callback = (info: Info) => void;
 
-export interface DetectionCompleteInfo {
-  success: string;
-  cardImg: string;
-  IDVID: string;
-  transactionId: string;
-  pictureType: string;
-}
-
-export default class AAIIOSIQASDK {
-  static initSDK(paramsConfig: ParamsConfig, uiConfig: UIConfig): void;
-  static setLicenseAndCheck(license: License, callback: (response: any) => void): void;
-  static showSDKPage(callback: (info: DetectionCompleteInfo) => void): void;
-  static sdkVersion(callback: (version: string) => void): void;
-  private static _sdkEventListener: ReturnType<NativeEventEmitter['addListener']> | null;
-  private static _callback: Record<string, (info: DetectionCompleteInfo) => void>;
-  private static _sdkEventCallback: {
-    onDetectionComplete: (info: DetectionCompleteInfo) => void;
-  };
+    export default class AAIIOSIQASDK {
+        static initSDK(paramsConfig: ParamsConfig, uiConfig: UIConfig): void;
+        static setLicenseAndCheck(license: License, callback: Callback): void;
+        static showSDKPage(callback: Callback): void;
+        static sdkVersion(callback: (version: string) => void): void;
+        private static _sdkEventListener: any;
+        private static _callback: Record<string, Callback>;
+        private static _sdkEventCallback: {
+            onDetectionComplete: (info: Info) => void;
+        };
+    }
 }
